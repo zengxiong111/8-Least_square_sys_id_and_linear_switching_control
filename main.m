@@ -26,24 +26,9 @@ G_closed_loop_all = similar_G_generation(A_all,B_all,C_all,K_LQG_all,L_LQG_all);
 %A bug in the paper is that r is not determined by your assumption and it
 %is determined by your controllers and your system properties.
 
-[K,S1,e1] = dlqr(A,B,Q,R) ;
-[K_temp,S2,e2] = dlqr(A',C',sigma_w * eye(n),sigma_z * eye(p)) ;
-L = K_temp';
 
-eig(A-B*K);
-eig(A-L*C);
 
-%A_h = [A-B*K B*K;zeros(n,n) A-L*C];
-A_h = [A -B*K; L*C A-L*C-B*K];
-%B_h = [B;0];
-B_h = [B;B];
-C_h = [C zeros(m,n)];
-Ob_h = obsv(A_h,C_h);
-Co_h = ctrb(A_h,B_h);
-rank(Ob_h)
-rank(Co_h)
-
-[T,Abar,Bbar,Cbar]=Kalman_Decomposition(A_h,B_h,C_h);
+ 
 
 % A_hat = A + 0.01*ones(size(A));
 % B_hat = B + 0.01*ones(size(B));
