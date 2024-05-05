@@ -23,7 +23,8 @@ sigma_z = 0.02;
 [K_LQG_all,L_LQG_all] = K_L_computation(A_all,B_all,C_all,Q,R,sigma_w,sigma_z);
 G_closed_loop_all = similar_G_generation(A_all,B_all,C_all,K_LQG_all,L_LQG_all);
 
-
+%A bug in the paper is that r is not determined by your assumption and it
+%is determined by your controllers and your system properties.
 
 [K,S1,e1] = dlqr(A,B,Q,R) ;
 [K_temp,S2,e2] = dlqr(A',C',sigma_w * eye(n),sigma_z * eye(p)) ;

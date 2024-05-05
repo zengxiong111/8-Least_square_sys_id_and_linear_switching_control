@@ -1,14 +1,10 @@
-%r is the spetral radius of A
-%m is the output dimension
-%n is the system state dimension
-%p is the control input dimension
-r = 1.1;
-m = 1;
-n = 3;
-p = 1;
-
-N =5;
+r = 1.1; %r is the spetral radius of A
+m = 1; %m is the output dimension
+n = 3; %n is the system state dimension
+p = 1; %p is the control input dimension
+N =5; % the number of system candidates
 h=5; % The length of the time horizon of Markov parameter matrix 
+
 A_all = zeros(N,n,n);
 B_all = zeros(N,n,p );
 C_all = zeros(N,m,n );
@@ -24,10 +20,10 @@ sigma_w = 0.02;
 sigma_z = 0.02;
 
 [A_all,B_all,C_all] = similar_system_generation(r,m,n,p,N);
-[K_LQG_all,L_LQG_all] = K_L_computation();
+[K_LQG_all,L_LQG_all] = K_L_computation(A_all,B_all,C_all,Q,R,sigma_w,sigma_z);
 G_closed_loop_all = similar_G_generation(A_all,B_all,C_all,K_LQG_all,L_LQG_all);
 
-
+%r is not determined by 
 
 [K,S1,e1] = dlqr(A,B,Q,R) ;
 [K_temp,S2,e2] = dlqr(A',C',sigma_w * eye(n),sigma_z * eye(p)) ;
