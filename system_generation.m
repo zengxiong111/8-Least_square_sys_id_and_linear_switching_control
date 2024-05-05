@@ -1,17 +1,33 @@
 function [A,B,C,D] = system_generation(r,m,n,p)
 
-A = zeros(n,n);
+for i = 1:5
+    A = zeros(n,n);
+    
+    B = zeros(n,p);
+    C = zeros(m,n);
+    
+    D = zeros(m,p);
+    
+    B = normrnd(0,1/n,[n,p]);
+    C = normrnd(0,1/m,[m,n]);
+    
+    A = rand(n);
+    A = r * A/vrho(A);
 
-B = zeros(n,p);
-C = zeros(m,n);
+    Ob = obsv(A,C);
+    Co = ctrb(A,B);
+    % check if the genrated system is controllable and observable
+    if(rank(Ob) == n & rank(Co) == n)
+        break;
+    end
+    if(rank(Ob) < n | rank(Co) < n)
+        if(i==5)
+            disp('system generation fails!');
+        end
+        continue;
+    end
 
-D = zeros(m,p);
-
-B = normrnd(0,1/n,[n,p]);
-C = normrnd(0,1/m,[m,n]);
-
-A = rand(n);
-A = r * A/vrho(A);
+end
 
 % A = [r 0.5;0 r];
 % B = [0;1];

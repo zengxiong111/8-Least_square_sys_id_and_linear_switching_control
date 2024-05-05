@@ -7,6 +7,12 @@ m = 1;
 n = 3;
 p = 1;
 
+N =5;
+T = 
+G_closed_loop_all = zoers(N,N,);
+K_LQG_all = zoers(N,)
+L_LQG_all = zoers(N,)
+
 for i = 1:5
     [A,B,C,D] = system_generation(r,m,n,p);
     Ob = obsv(A,C);
