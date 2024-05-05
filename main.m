@@ -45,6 +45,8 @@ Co_h = ctrb(A_h,B_h);
 rank(Ob_h)
 rank(Co_h)
 
+[T,Abar,Bbar,Cbar]=Kalman_Decomposition(A_h,B_h,C_h);
+
 % A_hat = A + 0.01*ones(size(A));
 % B_hat = B + 0.01*ones(size(B));
 % C_hat = C + 0.01*ones(size(C));
