@@ -2,15 +2,12 @@ function [A,B,C,D] = system_generation(r,m,n,p)
 
 for i = 1:5
     A = zeros(n,n);
-    
     B = zeros(n,p);
     C = zeros(m,n);
-    
     D = zeros(m,p);
     
     B = normrnd(0,1/n,[n,p]);
     C = normrnd(0,1/m,[m,n]);
-    
     A = rand(n);
     A = r * A/vrho(A);
 

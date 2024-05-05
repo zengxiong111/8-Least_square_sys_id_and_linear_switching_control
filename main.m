@@ -9,23 +9,14 @@ p = 1;
 
 N =5;
 T = 
+A_all = zeros(N,n,n);
+B_all = zeros(N, );
+C_all = zeros(N, );
 G_closed_loop_all = zoers(N,N,);
 K_LQG_all = zoers(N,)
 L_LQG_all = zoers(N,)
 
-for i = 1:5
-    [A,B,C,D] = system_generation(r,m,n,p);
-    Ob = obsv(A,C);
-    Co = ctrb(A,B);
-    % check if the genrated system is controllable and observable
-    if(rank(Ob) == n & rank(Co) == n)
-        break;
-    end
-    if(rank(Ob) < n | rank(Co) < n)
-        continue;
-    end
-
-end
+[A,B,C,D] = system_generation(r,m,n,p);
 
 Q = eye(n);
 R = eye(p);
