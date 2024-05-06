@@ -1,7 +1,7 @@
 function [K_LQG_all,L_LQG_all] = K_L_computation(A_all,B_all,C_all,Q,R,sigma_w,sigma_z)
 
  
-[K,S1,e1] = dlqr(A,B,Q,R) ;
+[K,S1,e1] = dlqr(A,B,Q,R);
 [K_temp,S2,e2] = dlqr(A',C',sigma_w * eye(n),sigma_z * eye(p)) ;
 L = K_temp';
 

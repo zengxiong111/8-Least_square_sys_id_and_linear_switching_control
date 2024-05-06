@@ -27,12 +27,6 @@ G_closed_loop_all = similar_G_generation(A_all,B_all,C_all,K_LQG_all,L_LQG_all);
 %is determined by your controllers and your system properties.
 
 
-
- 
-
-% A_hat = A + 0.01*ones(size(A));
-% B_hat = B + 0.01*ones(size(B));
-% C_hat = C + 0.01*ones(size(C));
 % 
 % [K_hat,S1_hat,e1_hat] = dlqr(A_hat,B_hat,Q,R) ;
 % [K_temp_hat,S2_hat,e2_hat] = dlqr(A_hat',C_hat',sigma_w * eye(n),sigma_z * eye(p)) ;

@@ -1,4 +1,5 @@
-function [A,B,C,D] = system_generation(r,m,n,p)
+function G_closed_loop_all = similar_G_generation(A_all,B_all,C_all,K_LQG_all,L_LQG_all)
+
 
 G = zeros(m,T*p);
 G(:,1:p) = D;

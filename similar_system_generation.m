@@ -1,4 +1,4 @@
-function [A,B,C,D] = system_generation(r,m,n,p)
+function [A_all,B_all,C_all] = similar_system_generation(r,m,n,p,N)
 
 for i = 1:5
     A = zeros(n,n);
@@ -25,6 +25,10 @@ for i = 1:5
     end
 
 end
+
+% A_hat = A + 0.01*ones(size(A));
+% B_hat = B + 0.01*ones(size(B));
+% C_hat = C + 0.01*ones(size(C));
 
 % A = [r 0.5;0 r];
 % B = [0;1];
