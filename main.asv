@@ -21,10 +21,18 @@ sigma_z = 0.02;
 
 [A_all,B_all,C_all] = similar_system_generation(r,m,n,p,N);
 [K_all,L_all,G_cl_all,A_t_all,B_t_all,C_t_all] = K_L_G_computation(A_all,B_all,... %delta is the probability
-    C_all,Q,R,sigma_w,sigma_z,h,delta);
+    C_all,Q,R,sigma_w,sigma_z,h);
  
+
+P_all = zeros(N,N,2*n,2*n);
+
 %find all Xi in Proposition 5
-P_temp = dlyap(A_t_all(i,j,:,:),C_t_all(i,j,:,:)'*C_t_all(i,j,:,:));
+Xi_max = find_Xi(A_t_all,B_t_all,C_t_all,delta,sigma_w,sigma_z,sigma_u);
+delta=0.1;
+P_all(i,j,:,:) = dlyap(A_t_all(i,j,:,:),C_t_all(i,j,:,:)'*C_t_all(i,j,:,:));
+
+c_p = 2*max(1,m_p)
+
 Xi_all(i,j) ;
 
 %find the critical direction

@@ -1,4 +1,4 @@
-function [K_all,L_all,G_cl_all,A_t_all,B_t_all,C_t_all] = K_L_G_computation(A_all,B_all,C_all,Q,R,sigma_w,sigma_z,h)
+function Xi_max = find_Xi(A_t_all,B_t_all,C_t_all,delta,sigma_w,sigma_z,sigma_u)
 
 %delta is the probability.
 
@@ -49,5 +49,10 @@ for i = 1:N
         end
     end
 end
+
+
+
+
+ 
 
 end
