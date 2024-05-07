@@ -19,6 +19,11 @@ for i = 1:N
     L_all(i,:,:) = K_temp';
 end
 
+A_t_all = zeros(N,n,n);
+B_all = zeros(N,n,p );
+C_all = zeros(N,m,n );
+K_all = zoers(N,p,n);
+
  
 for i = 1:N
     A_h = squeeze(A_all(i,:,:));
@@ -41,7 +46,7 @@ for i = 1:N
         end
 
         %find the critical direction
-        
+        %Or just compare the spectral norm distance
     end
 end
 
