@@ -35,14 +35,26 @@ P_op_all = zeros(N,N);
 
 %x_1 is sampled from N(0,I_{d_x*t \times d_x})
 
+m_a
+m_s
 m_p = max(P_op_all);
+m_t
+sigma_m
+c_e
+c_r
 c_p = 2*max(1,m_p / epsilon_c / epsilon_c);
+c_s
 
 M_all = zeros(N,1);
 M_all(1) = 5 * m_p * log(1/delta);
 
 tau_all = zeros(N,1);
-tau_all(1) = n + log(1/delta);
+%tau_all(1) = n + log(1/delta);
+tau_all(1) = max(1600/9*log(1/delta),...
+    6400*epsilon_c/(9*sigma_w^2*(M_1 + c_r *log(2/delta)*n^2 * m_a^(4*n) + c_s * log(1/delta) )));
+for j= 2:N
+    tau_all(j) = (j-1)*(2/log(m_a)*n + log(c_p)) + tau_all(1);
+end
 
 
 Xi_all(i,j) ;
