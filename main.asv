@@ -10,7 +10,7 @@ B_all = zeros(N,n,p );
 C_all = zeros(N,m,n );
 K_all = zoers(N,p,n);
 L_all = zoers(N,n,m);
-G_cl_all = zeros(N,N,m,T*p);
+G_cl_all = zeros(N,N,m,h*p);
 
 Q = eye(n);
 R = eye(p);
@@ -20,26 +20,12 @@ sigma_w = 0.02;
 sigma_z = 0.02;
 
 [A_all,B_all,C_all] = similar_system_generation(r,m,n,p,N);
-[K_all,L_all,G_cl_all] = K_L_G_computation(A_all,B_all,C_all,Q,R,sigma_w,sigma_z);
+[K_all,L_all,G_cl_all,A_t_all,B_t_all,C_t_all] = K_L_G_computation(A_all,B_all,... %delta is the probability
+    C_all,Q,R,sigma_w,sigma_z,h,delta);
  
-%A bug in the paper is that r is not determined by your assumption and it
-%is determined by your controllers and your system properties.
+%find all Xi in Proposition 5
+P_temp = dlyap(A_t_all(i,j,:,:),C_t_all(i,j,:,:)'*C_t_all(i,j,:,:));
+Xi_all(i,j) ;
 
-
-% 
-% [K_hat,S1_hat,e1_hat] = dlqr(A_hat,B_hat,Q,R) ;
-% [K_temp_hat,S2_hat,e2_hat] = dlqr(A_hat',C_hat',sigma_w * eye(n),sigma_z * eye(p)) ;
-% L_hat = K_temp_hat';
-% 
-% eig(A-B*K_hat)
-% eig(A-L_hat*C)
-% 
-% %A_h = [A-B*K B*K;zeros(n,n) A-L*C];
-% A_h_hat = [A -B*K_hat; L_hat*C A_hat-L_hat*C_hat-B_hat*K_hat];
-% %B_h = [B;0];
-% B_h_hat = [B;B_hat];
-% C_h_hat = [C zeros(m,n)];
-% Ob_h_hat = obsv(A_h_hat,C_h_hat);
-% Co_h_hat = ctrb(A_h_hat,B_h_hat);
-% rank(Ob_h_hat)
-% rank(Co_h_hat)
+%find the critical direction
+%Or just compare the spectral norm distance

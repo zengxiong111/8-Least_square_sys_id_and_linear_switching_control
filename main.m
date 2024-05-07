@@ -20,6 +20,13 @@ sigma_w = 0.02;
 sigma_z = 0.02;
 
 [A_all,B_all,C_all] = similar_system_generation(r,m,n,p,N);
-[K_all,L_all,G_cl_all] = K_L_G_computation(A_all,B_all,... %delta is the probability
-    C_all,Q,R,sigma_w,sigma_z,h,delta);
+[K_all,L_all,G_cl_all,A_t_all,B_t_all,C_t_all] = K_L_G_computation(A_all,B_all,... %delta is the probability
+    C_all,Q,R,sigma_w,sigma_z,h);
  
+%find all Xi in Proposition 5
+delta=0.1;
+P_temp = dlyap(A_t_all(i,j,:,:),C_t_all(i,j,:,:)'*C_t_all(i,j,:,:));
+Xi_all(i,j) ;
+
+%find the critical direction
+%Or just compare the spectral norm distance
