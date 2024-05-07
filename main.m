@@ -56,6 +56,11 @@ for j= 2:N
     tau_all(j) = (j-1)*(2/log(m_a)*n + log(c_p)) + tau_all(1);
 end
 
+for j=2:N
+    M_all(j) = m_p/(epsilon_c^2)*m_a^(2*n)*(M_all(j-1)+tau_all(j-1)*c_s)...
+        + c_r * log(1/delta)* n^2 * m_a^(4*n);
+end
+
 
 Xi_all(i,j) ;
 
