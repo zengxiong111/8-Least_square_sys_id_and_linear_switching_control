@@ -20,5 +20,6 @@ sigma_w = 0.02;
 sigma_z = 0.02;
 
 [A_all,B_all,C_all] = similar_system_generation(r,m,n,p,N);
-[K_all,L_all,G_cl_all] = K_L_G_computation(A_all,B_all,C_all,Q,R,sigma_w,sigma_z,h);
+[K_all,L_all,G_cl_all] = K_L_G_computation(A_all,B_all,... %delta is the probability
+    C_all,Q,R,sigma_w,sigma_z,h,delta);
  

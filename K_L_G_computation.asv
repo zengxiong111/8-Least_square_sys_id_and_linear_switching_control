@@ -8,6 +8,8 @@ m = size(C_all,2);
 K_all = zoers(N,p,n);
 L_all = zoers(N,n,m);
 
+G_cl_all = zeros(N,N,m,h*p);
+
 for i = 1:N
     A = squeeze(A_all(i,:,:));
     B = squeeze(B_all(i,:,:));
@@ -16,6 +18,11 @@ for i = 1:N
     [K_temp,S2,e2] = dlqr(A',C',sigma_w * eye(n),sigma_z * eye(p)) ;
     L_all(i,:,:) = K_temp';
 end
+
+A_t_all = zeros(N,n,n);
+B_t_all = zeros(N,n,p );
+C_t_all = zeros(N,m,n );
+K_t_all = zoers(N,p,n);
 
  
 for i = 1:N
@@ -32,17 +39,14 @@ for i = 1:N
             (A_h-A)+(B_h-B)*K_h+L_h*(C-C_h)   A_h-L_h*C_h+(B_h-B)*K_h];
         B_t = [B;zeros(size(B))];
         C_t = [C zeros(size(C))];
-        G = zeros(m,h*p);
-        %A_h = [A-B*K B*K;zeros(n,n) A-L*C];
-        A_h = [A -B*K; L*C A-L*C-B*K];
-        %B_h = [B;0];
-        B_h = [B;B];
-        C_h = [C zeros(m,n)];
 
-        G(:,1:p) = D;
+        G_cl_all(i,j,:,1:p) = D;
         for k = 1:T-1
-            G(:,k*p + 1: (k+1)*p) = C*A^(k-1)*B;
+            G_cl_all(i,j,:,k*p + 1: (k+1)*p) = C_t*A_t^(k-1)*B_t;
         end
+
+        %find the critical direction
+        %Or just compare the spectral norm distance
     end
 end
 
