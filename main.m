@@ -38,6 +38,13 @@ P_op_all = zeros(N,N);
 m_p = max(P_op_all);
 c_p = 2*max(1,m_p / epsilon_c / epsilon_c);
 
+M_all = zeros(N,1);
+M_all(1) = 5 * m_p * log(1/delta);
+
+tau_all = zeros(N,1);
+tau_all(1) = n + log(1/delta);
+
+
 Xi_all(i,j) ;
 
 %find the critical direction
