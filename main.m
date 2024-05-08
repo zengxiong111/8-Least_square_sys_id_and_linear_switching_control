@@ -15,19 +15,19 @@ G_cl_all = zeros(N,N,m,h*p);
 Q = eye(n);
 R = eye(p);
 
-sigma_u = 1;
-sigma_w = 0.02;
-sigma_z = 0.02;
+sigma_u_2 = 1;
+sigma_w_2 = 0.02;
+sigma_z_2 = 0.02;
 
 [A_all,B_all,C_all] = similar_system_generation(r,m,n,p,N);
 [K_all,L_all,G_cl_all,A_t_all,B_t_all,C_t_all] = K_L_G_computation(A_all,B_all,... %delta is the probability
-    C_all,Q,R,sigma_w,sigma_z,h);
+    C_all,Q,R,sigma_w_2,sigma_z_2,h);
  
 
 P_all = zeros(N,N,2*n,2*n);
 
 %find all Xi in Proposition 5
-Xi_max = find_Xi(A_t_all,B_t_all,C_t_all,delta,sigma_w,sigma_z,sigma_u);
+Xi_max = find_Xi(A_t_all,B_t_all,C_t_all,delta,sigma_w_2,sigma_z_2,sigma_u_2);
 delta=0.1;
 P_all(i,j,:,:) = dlyap(A_t_all(i,j,:,:),C_t_all(i,j,:,:)'*C_t_all(i,j,:,:));
 
@@ -39,17 +39,26 @@ m_a=0;
 m_s=0;
 m_p=0;
 m_t=0;
+c_s=0;
+
+
+%For m_p,m_t,c_s, we need to check the stability of the closed-loop.
 
 for i=1:N
     for j=1:N
-        P_all(i,j,:,:) = dlyap(A_t_all(i,j,:,:),C_t_all(i,j,:,:)'*C_t_all(i,j,:,:));
-        max([1,norm(A_t_all(i,j,:,:),operator)]);
-        B_t_all(i,j,:,:) C_t_all(i,j,:,:)
+        max([1,norm(A_t_all(i,j,:,:))]);
+        max([1,norm(B_t_all(i,j,:,:)), norm(C_t_all(i,j,:,:))]);
+        P = dlyap(A_t_all(i,j,:,:),C_t_all(i,j,:,:)'*C_t_all(i,j,:,:));
+        norm(P)
+        trace(P)
+        c_s_temp = 5*(sigma_w_2*trace(P)+sigma_u_2*...
+            trace(B_t_all(i,j,:,:)'*P*B_t_all(i,j,:,:))+...
+            sigma_z_2*n)*log(1/delta);
     end
 end
 
-c_s
-sigma_m
+
+sigma_m = max([sigma_w,sigma_u,sigma_z]);
 c_e
 c_r
 c_p = 2*max([1,m_p/(epsilon_c^2)]);

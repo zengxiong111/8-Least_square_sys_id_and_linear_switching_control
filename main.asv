@@ -39,17 +39,24 @@ m_a=0;
 m_s=0;
 m_p=0;
 m_t=0;
+c_s=0;
+
+
+%For m_p,m_t,c_s, we need to check the stability of the closed-loop.
 
 for i=1:N
     for j=1:N
-        P_all(i,j,:,:) = dlyap(A_t_all(i,j,:,:),C_t_all(i,j,:,:)'*C_t_all(i,j,:,:));
-        max([1,norm(A_t_all(i,j,:,:),operator)]);
-        B_t_all(i,j,:,:) C_t_all(i,j,:,:)
+        max([1,norm(A_t_all(i,j,:,:))]);
+        max([1,norm(B_t_all(i,j,:,:)), norm(C_t_all(i,j,:,:))]);
+        P = dlyap(A_t_all(i,j,:,:),C_t_all(i,j,:,:)'*C_t_all(i,j,:,:));
+        norm(P)
+        trace(P)
+        c_s_temp = ;
     end
 end
 
-c_s
-sigma_m
+
+sigma_m = max([sigma_w,sigma_u,sigma_z]);
 c_e
 c_r
 c_p = 2*max([1,m_p/(epsilon_c^2)]);
