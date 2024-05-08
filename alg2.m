@@ -1,32 +1,35 @@
-function system_index = alg2(A,B,C,G_cl_all,A_t_all,B_t_all,C_t_all,M_all,tau_all,Xi_all)
+function system_index = alg2(A,B,C,G_cl_all,A_t_all,B_t_all,C_t_all,M_all,tau_all,Xi_all,K_all,L_all)
 
+n = size(A,1);
+N = size(G_cl_all,1);
 x0 = randn(n,1);
 xnow = x0;
 
-T = 100;
+T_all = sum(tau_all);
 
-x = zeros(n,T+1);
+x = zeros(n,T_all+1);
 x(:,1) = xnow;
 
 %valid_clf = 1:14;
 indnow = 1;
 Know = K_all(indnow,:); 
-Pnow = P_all( ((indnow-1)*n+1):(n*indnow),:);
+Lnow = L_all(indnow,:);
 
-
-for t=1:T
-    u = Know * xnow; %solve for u
-    xnext = A*xnow+B1*u;
-    x(:,t+1) = xnext;
-    % check CLF validity
-    if xnext'*Pnow*xnext >= xnow'*Pnow*xnow
-        t
-        indnow = indnow+1;
-        Know = K_all(indnow,:); 
-        Pnow = P_all( ((indnow-1)*n+1):(n*indnow),:);
-        %norm(xnow)
+for i =1:N
+    for t=1:T
+        u = Know * xnow; %solve for u
+        xnext = A*xnow+B1*u;
+        x(:,t+1) = xnext;
+        % check CLF validity
+        if xnext'*Pnow*xnext >= xnow'*Pnow*xnow
+            t
+            indnow = indnow+1;
+            Know = K_all(indnow,:); 
+            Pnow = P_all( ((indnow-1)*n+1):(n*indnow),:);
+            %norm(xnow)
+        end
+        xnow = xnext;
     end
-    xnow = xnext;
 end
 
 x_l2_norm = zeros(T+1,1);

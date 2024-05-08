@@ -1,14 +1,11 @@
-function system_index = alg2(G_cl_all,A_t_all,B_t_all,C_t_all,M_all,tau_all,Xi_all)
+function system_index = alg2(A,B,C,G_cl_all,A_t_all,B_t_all,C_t_all,M_all,tau_all,Xi_all,K_all,L_all)
 
-%m0 = 5*rand;
-m0 = 2;
-
-[A B1] = generate_A_B(v,r,n,m0);
-
+n = size(A,1);
+N = size(G_cl_all,1);
 x0 = randn(n,1);
 xnow = x0;
 
-T = 100;
+T = sum(tau_all);
 
 x = zeros(n,T+1);
 x(:,1) = xnow;
@@ -16,7 +13,7 @@ x(:,1) = xnow;
 %valid_clf = 1:14;
 indnow = 1;
 Know = K_all(indnow,:); 
-Pnow = P_all( ((indnow-1)*n+1):(n*indnow),:);
+Lnow = L_all(indnow,:);
 
 
 for t=1:T
