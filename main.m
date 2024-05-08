@@ -34,8 +34,9 @@ M_all = zeros(N,1);
 tau_all = zeros(N,1);
 Xi_all = zeros(N,1);
 
-epsilon_a = ?;
-epsilon_c = ?;
+
+epsilon_a = ?; %min{spectral radius of A^j_i - 1} assumption 2
+epsilon_c = ?; %min{absolute value of eigenvalues C^j_i} assumption 3
 
 [M_all,tau_all,Xi_all] = inputs_alg2(A_t_all,B_t_all,C_t_all,epsilon_a,epsilon_c);
 
