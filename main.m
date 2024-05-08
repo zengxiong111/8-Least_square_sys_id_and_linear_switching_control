@@ -12,6 +12,9 @@ C_all = zeros(N,m,n );
 K_all = zoers(N,p,n);
 L_all = zoers(N,n,m);
 G_cl_all = zeros(N,N,m,h*p);
+A_t_all = zeros(N,N,2*n,2*n);
+B_t_all = zeros(N,N,2*n,p );
+C_t_all = zeros(N,N,m,2*n );
 
 Q = eye(n);
 R = eye(p);
@@ -31,73 +34,12 @@ M_all = zeros(N,1);
 tau_all = zeros(N,1);
 Xi_all = zeros(N,1);
 
-m_a=0;
-m_s=0;
-m_p=0;
-m_t=0;
-c_s=0;
-
-
-%For m_p,m_t,c_s, we need to check the stability of the closed-loop.
-for i=1:N
-    for j=1:N
-        m_a_temp = max([1,norm(A_t_all(i,j,:,:))]);
-        m_s_temp = max([1,norm(B_t_all(i,j,:,:)), norm(C_t_all(i,j,:,:))]);
-        if(m_a_temp > m_a)
-            m_a = m_a_temp;
-        end
-        if(m_s_temp > m_s)
-            m_s = m_s_temp;
-        end
-    end
-end
-
-for i=1:N
-    for j=1:N
-        if(vrho(A_t_all(i,j,:,:))<1)
-            P = dlyap(A_t_all(i,j,:,:),C_t_all(i,j,:,:)'*C_t_all(i,j,:,:));
-            m_p_temp = norm(P);
-            m_t_temp = trace(P);
-            c_s_temp = 5*(sigma_w_2*trace(P)+sigma_u_2*...
-                trace(B_t_all(i,j,:,:)'*P*B_t_all(i,j,:,:))+...
-                sigma_z_2*n)*log(1/delta);
-            if(m_p_temp > m_p)
-                m_p = m_p_temp;
-            end
-            if(m_t_temp > m_t)
-                m_t = m_t_temp;
-            end
-            if(c_s_temp > c_s)
-                c_s = c_s_temp;
-            end
-        end
-    end
-end
-
 epsilon_a = ?;
 epsilon_c = ?;
 
-sigma_m = max([sigma_w_2,sigma_u_2,sigma_z_2]);
-c_e = max([1,1/log(1+epsilon_a)]);
-c_r = m_p * (22*epsilon_c^(-2)+1)*sigma_m^2*c_e;
-c_p = 2*max([1,m_p/(epsilon_c^2)]);
+[M_all,tau_all,Xi_all] = inputs_alg2(A_t_all,B_t_all,C_t_all,epsilon_a,epsilon_c);
 
 
-%tau_all(1) = n + log(1/delta);
-tau_all(1) = max(1600/9*log(1/delta),...
-    6400*epsilon_c/(9*sigma_w^2*(M_1 + c_r *log(2/delta)*n^2 * m_a^(4*n) + c_s * log(1/delta) )));
-for j= 2:N
-    tau_all(j) = (j-1)*(2/log(m_a)*n + log(c_p)) + tau_all(1);
-end
-
-M_all(1) = 5 * m_p * log(1/delta);
-for j=2:N
-    M_all(j) = m_p/(epsilon_c^2)*m_a^(2*n)*(M_all(j-1)+tau_all(j-1)*c_s)...
-        + c_r * log(1/delta)* n^2 * m_a^(4*n);
-end
-
-
-Xi_all(i,j) ;
 
 %find the critical direction
 %Or just compare the spectral norm distance
