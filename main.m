@@ -56,23 +56,31 @@ for i=1:N
     for j=1:N
         if(vrho(A_t_all(i,j,:,:))<1)
             P = dlyap(A_t_all(i,j,:,:),C_t_all(i,j,:,:)'*C_t_all(i,j,:,:));
-            m_p_temp = norm(P)
-            m_t_temp = trace(P)
+            m_p_temp = norm(P);
+            m_t_temp = trace(P);
             c_s_temp = 5*(sigma_w_2*trace(P)+sigma_u_2*...
                 trace(B_t_all(i,j,:,:)'*P*B_t_all(i,j,:,:))+...
                 sigma_z_2*n)*log(1/delta);
+            if(m_p_temp > m_p)
+                m_p = m_p_temp;
+            end
+            if(m_t_temp > m_t)
+                m_t = m_t_temp;
+            end
+            if(c_s_temp > c_s)
+                c_s = c_s_temp;
+            end
         end
     end
 end
 
+epsilon_a = ?;
+epsilon_c = ?;
 
-sigma_m = max([sigma_w,sigma_u,sigma_z]);
+sigma_m = max([sigma_w_2,sigma_u_2,sigma_z_2]);
 c_e = max([1,1/log(1+epsilon_a)]);
 c_r = m_p * (22*epsilon_c^(-2)+1)*sigma_m^2*c_e;
 c_p = 2*max([1,m_p/(epsilon_c^2)]);
-
-
-M_all(1) = 5 * m_p * log(1/delta);
 
 
 %tau_all(1) = n + log(1/delta);
@@ -82,6 +90,7 @@ for j= 2:N
     tau_all(j) = (j-1)*(2/log(m_a)*n + log(c_p)) + tau_all(1);
 end
 
+M_all(1) = 5 * m_p * log(1/delta);
 for j=2:N
     M_all(j) = m_p/(epsilon_c^2)*m_a^(2*n)*(M_all(j-1)+tau_all(j-1)*c_s)...
         + c_r * log(1/delta)* n^2 * m_a^(4*n);
