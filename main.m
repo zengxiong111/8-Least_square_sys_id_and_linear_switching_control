@@ -35,15 +35,24 @@ P_op_all = zeros(N,N);
 
 %x_1 is sampled from N(0,I_{d_x*t \times d_x})
 
-m_a
-m_s
-m_p = max(P_op_all);
-m_t
+m_a=0;
+m_s=0;
+m_p=0;
+m_t=0;
+
+for i=1:N
+    for j=1:N
+        P_all(i,j,:,:) = dlyap(A_t_all(i,j,:,:),C_t_all(i,j,:,:)'*C_t_all(i,j,:,:));
+        max([1,norm(A_t_all(i,j,:,:),operator)]);
+        B_t_all(i,j,:,:) C_t_all(i,j,:,:)
+    end
+end
+
+c_s
 sigma_m
 c_e
 c_r
-c_p = 2*max(1,m_p / epsilon_c / epsilon_c);
-c_s
+c_p = 2*max([1,m_p/(epsilon_c^2)]);
 
 M_all = zeros(N,1);
 M_all(1) = 5 * m_p * log(1/delta);
