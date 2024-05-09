@@ -1,4 +1,4 @@
-function system_index = alg2(A,B,C,G_cl_all,A_t_all,B_t_all,C_t_all,M_all,tau_all,Xi_all,K_all,L_all)
+function system_index = alg2(A,B,C,G_cl_all,A_all,B_all,C_all,M_all,tau_all,Xi_all,K_all,L_all)
 
 n = size(A,1);
 m = size(C,1);
@@ -24,24 +24,33 @@ time_index = 1;
 x = zeros(n,T_all+1);
 x(:,time_index) = xnow;
 
+
+
 for i =1:N
     Know = K_all(i,:,:); 
     Lnow = L_all(i,:,:);
+    y_energy = 0;
     for t=1:tau_all(i)
         u = Know * x_hat_now;  
 
         xnext = A*xnow+B*u + W(:,time_index);
         ynow = C*xnow + Z(:,time_index);
+        x_hat_next = A_all(i,:,:)*x_hat_now+...
+            B_all(i,:,:)*u+Lnow*(ynow - C_all(i,:,:)*x_hat_now);
 
         x(:,time_index+1) = xnext;
         xnow = xnext;
+        x_hat_now = x_hat_next;
         time_index = time_index+1;
+        y_energy = y_energy + norm(x(:,i)); 
+    end
+    if y_energy < Xi_all(i)
     end
 end
 
-x_l2_norm = zeros(T+1,1);
-for i = 1:T+1
-    x_l2_norm(i) = norm(x(1:2,i));
+x_l2_norm = zeros(T_all,1);
+for i = 1:T_all
+    x_l2_norm(i) = norm(x(:,i));
 end
 
  

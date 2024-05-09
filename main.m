@@ -44,7 +44,7 @@ A = A_all(N,:,:);
 B = B_all(N,:,:);
 C = C_all(N,:,:);
 
-system_index = alg2(A,B,C,G_cl_all,A_t_all,B_t_all,C_t_all,M_all,tau_all,Xi_all,K_all,L_all);
+system_index = alg2(A,B,C,G_cl_all,A_all,B_all,C_all,M_all,tau_all,Xi_all,K_all,L_all);
 
 
 
