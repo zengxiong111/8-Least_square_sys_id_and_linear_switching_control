@@ -1,4 +1,4 @@
-function system_index = alg2(A,B,C,G_cl_all,A_all,B_all,C_all,M_all,tau_all,Xi_all,K_all,L_all,tau_f)
+function system_index = alg2(A,B,C,G_cl_all,A_all,B_all,C_all,M_all,tau_all,Xi_all,K_all,L_all,tau_f,U_all,V_all)
 
 n = size(A,1);
 m = size(C,1);
@@ -46,7 +46,7 @@ for i =1:N
         xnow = xnext;
         x_hat_now = x_hat_next;
         time_index = time_index+1;
-        y_energy = y_energy + norm(x(:,i)); 
+        y_energy = y_energy + norm(ynow); 
     end
     if y_energy < Xi_all(i)
         %noise trajectory
@@ -56,41 +56,45 @@ for i =1:N
         Z = Z';
         Ue = mvnrnd(zeros(p,1),sigma_u_2*eye(p),tau_f(i));
         Ue = Ue';
-        Y_id_all = [];
-        U_id_all = [];
+        Y_id_all = ynow;
+        U_id_all = u;
         for t = 1:tau_f(i)
             u = Know * x_hat_now + Ue(:,t);  
             xnext = A*xnow+B*u + W(:,t);
             ynow = C*xnow + Z(:,t);
             x_hat_next = A_all(i,:,:)*x_hat_now+...
                 B_all(i,:,:)*u+Lnow*(ynow - C_all(i,:,:)*x_hat_now);
-    
             x(:,time_index+1) = xnext;
             xnow = xnext;
             x_hat_now = x_hat_next;
+            Y_id_all = [Y_id_all ynow];
+            U_id_all = [U_id_all Ue(:,t)];
         end
+        G_i_all = G_cl_all(i,:,:,:);
+        U_i_all = U_all(:,i,:,:);
+        V_i_all = V_all(:,i,:,:);
+        system_index = alg1(G_i_all,U_i_all,V_i_all,Y_id_all,U_id_all);
+        return system_index;
     end
 end
 
-x_l2_norm = zeros(T_all,1);
-for i = 1:T_all
-    x_l2_norm(i) = norm(x(:,i));
-end
-
- 
-
-figure;
-hold on;
-plot(0:20,x_l2_norm(1:20+1),'-x','LineWidth',3); % plot the tight bound eq (4) in the paper
-
- %legend('robustness margin from Hinf','LMI sufficient [0,+m]','LMI sufficient [-m,+m]','controllability margin')
-legend('Adaptively Switching CLF')
-grid on;
-ax = gca;
-ax.LineWidth = 2;
-ax.GridLineStyle = '--';
-ax.GridAlpha = 0.8;
-lgd.FontSize = 18;
-xlabel('time t','FontSize',18) ;
-ylabel('||x_t||_2','FontSize',18) ;
-set(gca,'FontSize',20)
+% x_l2_norm = zeros(T_all,1);
+% for i = 1:T_all
+%     x_l2_norm(i) = norm(x(:,i));
+% end
+% 
+% figure;
+% hold on;
+% plot(0:20,x_l2_norm(1:20+1),'-x','LineWidth',3); % plot the tight bound eq (4) in the paper
+% 
+%  %legend('robustness margin from Hinf','LMI sufficient [0,+m]','LMI sufficient [-m,+m]','controllability margin')
+% legend('Adaptively Switching CLF')
+% grid on;
+% ax = gca;
+% ax.LineWidth = 2;
+% ax.GridLineStyle = '--';
+% ax.GridAlpha = 0.8;
+% lgd.FontSize = 18;
+% xlabel('time t','FontSize',18) ;
+% ylabel('||x_t||_2','FontSize',18) ;
+% set(gca,'FontSize',20)

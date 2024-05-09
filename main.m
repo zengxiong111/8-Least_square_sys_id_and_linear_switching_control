@@ -49,7 +49,7 @@ A = A_all(N,:,:);
 B = B_all(N,:,:);
 C = C_all(N,:,:);
 
-system_index = alg2(A,B,C,G_cl_all,A_all,B_all,C_all,M_all,tau_all,Xi_all,K_all,L_all,tau_f);
+system_index = alg2(A,B,C,G_cl_all,A_all,B_all,C_all,M_all,tau_all,Xi_all,K_all,L_all,tau_f,U_all,V_all);
 
 
 
