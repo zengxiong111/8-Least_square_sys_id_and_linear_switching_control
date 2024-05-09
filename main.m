@@ -41,7 +41,7 @@ M_all = zeros(N,1);
 tau_all = zeros(N,1);
 Xi_all = zeros(N,1);
 
-[epsilon_a,epsilon_c] = compute_epsilon(A_t_all,B_t_all,C_t_all);
+[epsilon_a,epsilon_c] = compute_epsilon(A_t_all,C_t_all);
 
 [M_all,tau_all,Xi_all] = inputs_alg2(A_t_all,B_t_all,C_t_all,epsilon_a,epsilon_c);
 
