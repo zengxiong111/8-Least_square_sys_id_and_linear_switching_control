@@ -14,5 +14,7 @@ end
 
 system_index = i;
 
+%How about the operator norm computation?
+
 end
 
