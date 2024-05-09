@@ -30,8 +30,8 @@ sigma_z_2 = 0.02;
 [K_all,L_all,G_cl_all,A_t_all,B_t_all,C_t_all] = K_L_G_computation(A_all,B_all,... %delta is the probability
     C_all,Q,R,sigma_w_2,sigma_z_2,h);
 
-gamma = zeros(N,1);
-gamma = compute_gamma(G_cl_all);
+%compute least distance and critical direction
+[gamma,U_all,V_all] = compute_gamma(G_cl_all);
 tau_f = zeross(N,1);
 for i =1:N
     tau_f(i) = 4*(sigma_w_2+sigma_z_2)/(sigma_u_2*gamma(i))*log(N^2/delta);
