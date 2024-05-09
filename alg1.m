@@ -6,6 +6,9 @@ G_hat = G_least_square(y_tau_f,z_tau_f);
 
 i=1;
 for j=2:N
-    if 
+    if(absolute(U_i_all(:,i,j)'*(G_i_all(i,:,:) - G_hat)*V_i_all(:,i,j)) <=...
+            absolute(U_i_all(:,i,j)'*(G_i_all(j,:,:) - G_hat)*V_i_all(:,i,j)))
+        i=j;
+    end
 end
 

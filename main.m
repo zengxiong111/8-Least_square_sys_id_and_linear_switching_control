@@ -31,7 +31,7 @@ sigma_z_2 = 0.02;
     C_all,Q,R,sigma_w_2,sigma_z_2,h);
 
 %compute least distance and critical direction
-[gamma,U_all,V_all] = compute_gamma(G_cl_all);
+[gamma,U_all,V_all] = compute_gamma_critical_direction(G_cl_all);
 tau_f = zeross(N,1);
 for i =1:N
     tau_f(i) = 4*(sigma_w_2+sigma_z_2)/(sigma_u_2*gamma(i))*log(N^2/delta);

@@ -27,13 +27,16 @@ x(:,time_index) = xnow;
 
 
 
+
+
+
 for i =1:N
     Know = K_all(i,:,:); 
     Lnow = L_all(i,:,:);
     y_energy = 0;
     for t=1:tau_all(i)
-        u = Know * x_hat_now;  
 
+        u = Know * x_hat_now;  
         xnext = A*xnow+B*u + W(:,time_index);
         ynow = C*xnow + Z(:,time_index);
         x_hat_next = A_all(i,:,:)*x_hat_now+...
@@ -46,6 +49,26 @@ for i =1:N
         y_energy = y_energy + norm(x(:,i)); 
     end
     if y_energy < Xi_all(i)
+        %noise trajectory
+        W = mvnrnd(zeros(n,1),sigma_w_2*eye(n),tau_f(i));
+        W = W';
+        Z = mvnrnd(zeros(m,1),sigma_z_2*eye(m),tau_f(i));
+        Z = Z';
+        Ue = mvnrnd(zeros(p,1),sigma_u_2*eye(p),tau_f(i));
+        Ue = Ue';
+        Y_id_all = [];
+        U_id_all = [];
+        for t = 1:tau_f(i)
+            u = Know * x_hat_now + Ue(:,t);  
+            xnext = A*xnow+B*u + W(:,t);
+            ynow = C*xnow + Z(:,t);
+            x_hat_next = A_all(i,:,:)*x_hat_now+...
+                B_all(i,:,:)*u+Lnow*(ynow - C_all(i,:,:)*x_hat_now);
+    
+            x(:,time_index+1) = xnext;
+            xnow = xnext;
+            x_hat_now = x_hat_next;
+        end
     end
 end
 
