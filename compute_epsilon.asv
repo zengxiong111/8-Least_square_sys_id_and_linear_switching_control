@@ -1,0 +1,3 @@
+function [epsilon_a,epsilon_c] = compute_epsilon(A_t_all,B_t_all,C_t_all)
+
+ N = 

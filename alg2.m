@@ -1,4 +1,4 @@
-function system_index = alg2(A,B,C,G_cl_all,A_all,B_all,C_all,M_all,tau_all,Xi_all,K_all,L_all)
+function system_index = alg2(A,B,C,G_cl_all,A_all,B_all,C_all,M_all,tau_all,Xi_all,K_all,L_all,tau_f)
 
 n = size(A,1);
 m = size(C,1);
@@ -23,6 +23,7 @@ Z = Z';
 time_index = 1;
 x = zeros(n,T_all+1);
 x(:,time_index) = xnow;
+
 
 
 
