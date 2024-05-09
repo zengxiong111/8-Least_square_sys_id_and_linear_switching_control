@@ -51,7 +51,8 @@ C = C_all(N,:,:);
 
 system_index = alg2(A,B,C,G_cl_all,A_all,B_all,C_all,M_all,tau_all,Xi_all,K_all,L_all,tau_f,U_all,V_all);
 
-
+%This is a random variable, we need to compute the estimation of its
+%expectation!
 
 %find the critical direction
 %Or just compare the spectral norm distance
