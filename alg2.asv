@@ -1,18 +1,20 @@
-function system_index = alg2(G_cl_all,A_t_all,B_t_all,C_t_all,M_all,tau_all,Xi_all,tau_f,U_all,V_all,K_all,L_all,A,B,C)
+function system_index = alg2(G_cl_all,A_t_all,B_t_all,C_t_all,M_all,tau_all,Xi_all,tau_f,U_all,V_all)
 
 N = size(G_cl_all,1);
+x0 = randn(n,1);
+xnow = x0;
+x_hat_now = x0;
+
 T_all = sum(tau_all);
+
+%valid_clf = 1:14;
+indnow = 1;
 
 %noise trajectory
 W = mvnrnd(zeros(n,1),sigma_w*eye(n),T_all);
 W = W';
 Z = mvnrnd(zeros(m,1),sigma_z*eye(m),T_all);
 Z = Z';
-
-%x0 = randn(n,1);
-x0 = zeros(n,1);
-xnow = x0;
-x_hat_now = x0;
 
 time_index = 1;
 x = zeros(n,T_all+1);

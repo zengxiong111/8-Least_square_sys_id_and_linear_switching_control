@@ -27,8 +27,8 @@ sigma_z_2 = 0.02;
 [A_all,B_all,C_all] = similar_system_generation(r,m,n,p,N);
 
 %all possible closed-loop systems
-[K_all,L_all,G_cl_all,A_t_all,B_t_all,C_t_all] = K_L_G_computation(A_all,B_all,... %delta is the probability
-    C_all,Q,R,sigma_w_2,sigma_z_2,h);
+[K_all,L_all,G_cl_all,A_t_all,B_t_all,C_t_all] = K_L_G_computation(A_all,B_all,... 
+    C_all,Q,R,sigma_w_2,sigma_z_2,h); %delta is the probability
 
 %compute least distance and critical direction
 [gamma,U_all,V_all] = compute_gamma_critical_direction(G_cl_all);
@@ -49,7 +49,8 @@ A = A_all(N,:,:);
 B = B_all(N,:,:);
 C = C_all(N,:,:);
 
-system_index = alg2(A,B,C,G_cl_all,A_all,B_all,C_all,M_all,tau_all,Xi_all,K_all,L_all,tau_f,U_all,V_all);
+system_index = alg2(G_cl_all,A_t_all,B_t_all,C_t_all,M_all,tau_all,Xi_all,tau_f,U_all,V_all,...
+    K_all,L_all,A,B,C);
 
 %This is a random variable, we need to compute the estimation of its
 %expectation!
