@@ -19,16 +19,16 @@ x = zeros(n,T_all+1);
 x(:,time_index) = xnow;
 
 for i =1:N
-    Know = K_all(i,:,:); 
-    Lnow = L_all(i,:,:);
+    Know = K_all(:,:,i); 
+    Lnow = L_all(:,:,i);
     y_energy = 0;
     for t=1:tau_all(i)
 
         u = Know * x_hat_now;  
         xnext = A*xnow+B*u + W(:,time_index);
         ynow = C*xnow + Z(:,time_index);
-        x_hat_next = A_all(i,:,:)*x_hat_now+...
-            B_all(i,:,:)*u+Lnow*(ynow - C_all(i,:,:)*x_hat_now);
+        x_hat_next = A_all(:,:,i)*x_hat_now+...
+            B_all(:,:,i)*u+Lnow*(ynow - C_all(:,:,i)*x_hat_now);
 
         x(:,time_index+1) = xnext;
         xnow = xnext;
@@ -50,15 +50,15 @@ for i =1:N
             u = Know * x_hat_now + Ue(:,t);  
             xnext = A*xnow+B*u + W(:,t);
             ynow = C*xnow + Z(:,t);
-            x_hat_next = A_all(i,:,:)*x_hat_now+...
-                B_all(i,:,:)*u+Lnow*(ynow - C_all(i,:,:)*x_hat_now);
+            x_hat_next = A_all(:,:,i)*x_hat_now+...
+                B_all(:,:,i)*u+Lnow*(ynow - C_all(:,:,i)*x_hat_now);
             x(:,time_index+1) = xnext;
             xnow = xnext;
             x_hat_now = x_hat_next;
             Y_id_all = [Y_id_all ynow];
             U_id_all = [U_id_all Ue(:,t)];
         end
-        G_i_all = G_cl_all(i,:,:,:);
+        G_i_all = G_cl_all(:,:,i,:);
         U_i_all = U_all(:,i,:,:);
         V_i_all = V_all(:,i,:,:);
         system_index = alg1(G_i_all,U_i_all,V_i_all,Y_id_all,U_id_all,h);

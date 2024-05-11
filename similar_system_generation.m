@@ -26,20 +26,20 @@ for i = 1:5
 
 end
 
-A_all = zeros(N,n,n);
-B_all = zeros(N,n,p );
-C_all = zeros(N,m,n );
+A_all = zeros(n,n,N);
+B_all = zeros(n,p ,N);
+C_all = zeros(m,n ,N);
 
-A_all(N,:,:) = A;
-B_all(N,:,:) = B;
-C_all(N,:,:) = C;
+A_all(:,:,N) = A;
+B_all(:,:,N) = B;
+C_all(:,:,N) = C;
 
 interval = 0.01;
 
 for i = 1:N-1
-    A_all(i,:,:) = A + i* interval * ones(size(A));
-    B_all(i,:,:) = B + i* interval * ones(size(B));
-    C_all(i,:,:) = C + i* interval * ones(size(C));
+    A_all(:,:,i) = A + i* interval * ones(size(A));
+    B_all(:,:,i) = B + i* interval * ones(size(B));
+    C_all(:,:,i) = C + i* interval * ones(size(C));
 end
 
 

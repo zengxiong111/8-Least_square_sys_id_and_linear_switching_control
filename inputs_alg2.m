@@ -11,8 +11,8 @@ N = size(A_t_all,1);
 %For m_p,m_t,c_s, we need to check the stability of the closed-loop.
 for i=1:N
     for j=1:N
-        m_a_temp = max([1,norm(A_t_all(i,j,:,:))]);
-        m_s_temp = max([1,norm(B_t_all(i,j,:,:)), norm(C_t_all(i,j,:,:))]);
+        m_a_temp = max([1,norm(A_t_all(:,:,i,j))]);
+        m_s_temp = max([1,norm(B_t_all(:,:,i,j)), norm(C_t_all(:,:,i,j))]);
         if(m_a_temp > m_a)
             m_a = m_a_temp;
         end
@@ -24,12 +24,12 @@ end
 
 for i=1:N
     for j=1:N
-        if(vrho(A_t_all(i,j,:,:))<1)
-            P = dlyap(A_t_all(i,j,:,:),C_t_all(i,j,:,:)'*C_t_all(i,j,:,:));
+        if(vrho(A_t_all(:,:,i,j))<1)
+            P = dlyap(A_t_all(:,:,i,j),C_t_all(:,:,i,j)'*C_t_all(:,:,i,j));
             m_p_temp = norm(P);
             m_t_temp = trace(P);
             c_s_temp = 5*(sigma_w_2*trace(P)+sigma_u_2*...
-                trace(B_t_all(i,j,:,:)'*P*B_t_all(i,j,:,:))+...
+                trace(B_t_all(:,:,i,j)'*P*B_t_all(:,:,i,j))+...
                 sigma_z_2*n)*log(1/delta);
             if(m_p_temp > m_p)
                 m_p = m_p_temp;
@@ -69,10 +69,10 @@ for k=1:N
     Xi_all(k) = 0;
     for i=1:N
         for j=1:N
-            if(vrho(A_t_all(i,j,:,:))<1)
-                P = dlyap(A_t_all(1,1,:,:),C_t_all(1,1,:,:)'*C_t_all(1,1,:,:));
+            if(vrho(A_t_all(:,:,i,j))<1)
+                P = dlyap(A_t_all(:,:,1,1),C_t_all(:,:,1,1)'*C_t_all(:,:,1,1));
                 Xi_all_temp = 2*M_all(k)+10*tau_all(k)*log(1/delta)*...
-                    (sigma_w_2*trace(P)+sigma_u_2*trace(B_t_all(1,1,:,:)'*P*B_t_all(1,1,:,:))+sigma_z_2*n);
+                    (sigma_w_2*trace(P)+sigma_u_2*trace(B_t_all( :,:,1,1)'*P*B_t_all( :,:,1,1))+sigma_z_2*n);
                 if(Xi_all_temp > Xi_all(k))
                     Xi_all(k) = Xi_all_temp;
                 end

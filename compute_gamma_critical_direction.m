@@ -15,7 +15,7 @@ for i = 1 : N
     num=1;
     for j = 1 : N-1
         for k = j+1 : N
-            gamma_temp = norm(G_cl_all(i,j,:,:)-G_cl_all(i,k,:,:));
+            gamma_temp = norm(G_cl_all(:,:,i,j)-G_cl_all(:,:,i,k));
             if(gamma_temp<gamma(i))
                 gamma(i) = gamma_temp;
             end
@@ -26,7 +26,7 @@ end
 for i = 1 : N
     for j = 1 : N 
         for k = 1 : N
-            [U,S,V] = svd(G_cl_all(i,j,:,:)-G_cl_all(i,k,:,:));
+            [U,S,V] = svd(G_cl_all(:,:,i,j)-G_cl_all(:,:,i,k));
             U_all(:,i,j,k) = U(:,1);
             V_all(:,i,j,k) = V(:,1);
         end
