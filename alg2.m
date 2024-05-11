@@ -1,12 +1,12 @@
-function system_index = alg2(G_cl_all,tau_all,Xi_all,tau_f,U_all,V_all,K_all,L_all,A,B,C,h)
+function system_index = alg2(A_all,B_all,C_all,G_cl_all,tau_all,Xi_all,tau_f,U_all,V_all,K_all,L_all,A,B,C,h,sigma_w_2,sigma_v_2)
 
 N = size(G_cl_all,1);
 T_all = sum(tau_all);
 
 %noise trajectory
-W = mvnrnd(zeros(n,1),sigma_w*eye(n),T_all);
+W = mvnrnd(zeros(n,1),sigma_w_2*eye(n),T_all);
 W = W';
-Z = mvnrnd(zeros(m,1),sigma_z*eye(m),T_all);
+Z = mvnrnd(zeros(m,1),sigma_v_2*eye(m),T_all);
 Z = Z';
 
 %x0 = randn(n,1);

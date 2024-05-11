@@ -1,4 +1,4 @@
-function [K_all,L_all,G_cl_all,A_t_all,B_t_all,C_t_all] = K_L_G_computation(A_all,B_all,C_all,Q,R,sigma_w,sigma_z,h)
+function [K_all,L_all,G_cl_all,A_t_all,B_t_all,C_t_all] = K_L_G_computation(A_all,B_all,C_all,Q,R,sigma_w_2,sigma_v_2,h)
 
 %delta is the probability.
 
@@ -7,8 +7,8 @@ n = size(A_all,2);
 p = size(B_all,3);
 m = size(C_all,2);
 
-K_all = zoers(N,p,n);
-L_all = zoers(N,n,m);
+K_all = zeros(N,p,n);
+L_all = zeros(N,n,m);
 
 G_cl_all = zeros(N,N,m,h*p);
 
@@ -17,7 +17,7 @@ for i = 1:N
     B = squeeze(B_all(i,:,:));
     C = squeeze(C_all(i,:,:));
     [K_all(i,:,:),S1,e1] = dlqr(A, B, Q,R);
-    [K_temp,S2,e2] = dlqr(A',C',sigma_w * eye(n),sigma_z * eye(p)) ;
+    [K_temp,S2,e2] = dlqr(A',C',sigma_w_2 * eye(n),sigma_v_2 * eye(p)) ;
     L_all(i,:,:) = K_temp';
 end
 

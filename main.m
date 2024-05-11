@@ -9,8 +9,8 @@ delta=0.1; %The probability of failure
 A_all = zeros(N,n,n);
 B_all = zeros(N,n,p );
 C_all = zeros(N,m,n );
-K_all = zoers(N,p,n);
-L_all = zoers(N,n,m);
+K_all = zeros(N,p,n);
+L_all = zeros(N,n,m);
 G_cl_all = zeros(N,N,m,h*p);
 A_t_all = zeros(N,N,2*n,2*n);
 B_t_all = zeros(N,N,2*n,p );
@@ -43,14 +43,15 @@ Xi_all = zeros(N,1);
 
 [epsilon_a,epsilon_c] = compute_epsilon(A_t_all,C_t_all);
 
-[M_all,tau_all,Xi_all] = inputs_alg2(A_t_all,B_t_all,C_t_all,epsilon_a,epsilon_c);
+[M_all,tau_all,Xi_all] = inputs_alg2(A_t_all,B_t_all,C_t_all,epsilon_a,epsilon_c,...
+    sigma_w_2,sigma_u_2,sigma_v_2);
 
 A = A_all(N,:,:);
 B = B_all(N,:,:);
 C = C_all(N,:,:);
 
-system_index = alg2(G_cl_all,M_all,tau_all,Xi_all,tau_f,U_all,V_all,...
-    K_all,L_all,A,B,C,h);
+system_index = alg2(A_all,B_all,C_all,G_cl_all,M_all,tau_all,Xi_all,tau_f,U_all,V_all,...
+    K_all,L_all,A,B,C,h,sigma_w_2,sigma_v_2);
 
 %This is a random variable, we need to compute the estimation of its
 %expectation!
