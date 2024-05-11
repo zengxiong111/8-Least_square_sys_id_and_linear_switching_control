@@ -21,20 +21,20 @@ R = eye(p);
 
 sigma_u_2 = 1;
 sigma_w_2 = 0.02;
-sigma_z_2 = 0.02;
+sigma_v_2 = 0.02;
 
 %similar systems generation
 [A_all,B_all,C_all] = similar_system_generation(r,m,n,p,N);
 
 %all possible closed-loop systems
 [K_all,L_all,G_cl_all,A_t_all,B_t_all,C_t_all] = K_L_G_computation(A_all,B_all,... 
-    C_all,Q,R,sigma_w_2,sigma_z_2,h); %delta is the probability
+    C_all,Q,R,sigma_w_2,sigma_v_2,h); %delta is the probability
 
 %compute least distance and critical direction
 [gamma,U_all,V_all] = compute_gamma_critical_direction(G_cl_all);
 tau_f = zeross(N,1);
 for i =1:N
-    tau_f(i) = 4*(sigma_w_2+sigma_z_2)/(sigma_u_2*gamma(i))*log(N^2/delta);
+    tau_f(i) = 4*(sigma_w_2+sigma_v_2)/(sigma_u_2*gamma(i))*log(N^2/delta);
 end
  
 M_all = zeros(N,1);

@@ -1,4 +1,4 @@
-function [U_single,Y_single] = single_trajectory_generation(N,T,A,B,C,D,sigma_u,sigma_w,sigma_z)
+function [U_single,Y_single] = single_trajectory_generation(N,T,A,B,C,D,sigma_u,sigma_w,sigma_v_2)
 
 n = size(A,1);
 p = size(B,2);
@@ -8,7 +8,7 @@ U_single = mvnrnd(zeros(p,1),sigma_u*eye(p),N+T-1);
 U_single = U_single';
 W = mvnrnd(zeros(n,1),sigma_w*eye(n),N+T-1);
 W = W';
-Z = mvnrnd(zeros(m,1),sigma_z*eye(m),N+T-1);
+Z = mvnrnd(zeros(m,1),sigma_v_2*eye(m),N+T-1);
 Z = Z';
 
 Y_single = zeros(m,N+T-1);

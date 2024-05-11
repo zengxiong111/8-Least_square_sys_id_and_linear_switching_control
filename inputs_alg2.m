@@ -30,7 +30,7 @@ for i=1:N
             m_t_temp = trace(P);
             c_s_temp = 5*(sigma_w_2*trace(P)+sigma_u_2*...
                 trace(B_t_all(i,j,:,:)'*P*B_t_all(i,j,:,:))+...
-                sigma_z_2*n)*log(1/delta);
+                sigma_v_2*n)*log(1/delta);
             if(m_p_temp > m_p)
                 m_p = m_p_temp;
             end
@@ -44,7 +44,7 @@ for i=1:N
     end
 end
 
-sigma_m = max([sigma_w_2,sigma_u_2,sigma_z_2]);
+sigma_m = max([sigma_w_2,sigma_u_2,sigma_v_2]);
 c_e = max([1,1/log(1+epsilon_a)]);
 c_r = m_p * (22*epsilon_c^(-2)+1)*sigma_m^2*c_e;
 c_p = 2*max([1,m_p/(epsilon_c^2)]);
@@ -72,7 +72,7 @@ for k=1:N
             if(vrho(A_t_all(i,j,:,:))<1)
                 P = dlyap(A_t_all(1,1,:,:),C_t_all(1,1,:,:)'*C_t_all(1,1,:,:));
                 Xi_all_temp = 2*M_all(k)+10*tau_all(k)*log(1/delta)*...
-                    (sigma_w_2*trace(P)+sigma_u_2*trace(B_t_all(1,1,:,:)'*P*B_t_all(1,1,:,:))+sigma_z_2*n);
+                    (sigma_w_2*trace(P)+sigma_u_2*trace(B_t_all(1,1,:,:)'*P*B_t_all(1,1,:,:))+sigma_v_2*n);
                 if(Xi_all_temp > Xi_all(k))
                     Xi_all(k) = Xi_all_temp;
                 end
