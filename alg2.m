@@ -62,7 +62,7 @@ for i =1:N
         U_i_all = U_all(:,i,:,:);
         V_i_all = V_all(:,i,:,:);
         system_index = alg1(G_i_all,U_i_all,V_i_all,Y_id_all,U_id_all,h);
-        return system_index;
+        return
     end
 end
 
