@@ -1,4 +1,10 @@
-function G_ls = G_least_square(U_single,Y_single,N,m,T,p)
+% function G_ls = G_least_square(U_single,Y_single,N,m,T,p)
+function G_ls = G_least_square(U_single,Y_single,h)
+
+N_hat = size(U_single,1);
+
+N = N_hat - h;
+
 
 Y = zeros(N,m);
 U = zeros(N,T*p);

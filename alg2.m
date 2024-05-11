@@ -1,4 +1,4 @@
-function system_index = alg2(G_cl_all,A_t_all,B_t_all,C_t_all,M_all,tau_all,Xi_all,tau_f,U_all,V_all,K_all,L_all,A,B,C)
+function system_index = alg2(G_cl_all,tau_all,Xi_all,tau_f,U_all,V_all,K_all,L_all,A,B,C,h)
 
 N = size(G_cl_all,1);
 T_all = sum(tau_all);
@@ -61,7 +61,7 @@ for i =1:N
         G_i_all = G_cl_all(i,:,:,:);
         U_i_all = U_all(:,i,:,:);
         V_i_all = V_all(:,i,:,:);
-        system_index = alg1(G_i_all,U_i_all,V_i_all,Y_id_all,U_id_all);
+        system_index = alg1(G_i_all,U_i_all,V_i_all,Y_id_all,U_id_all,h);
         return system_index;
     end
 end

@@ -49,8 +49,8 @@ A = A_all(N,:,:);
 B = B_all(N,:,:);
 C = C_all(N,:,:);
 
-system_index = alg2(G_cl_all,A_t_all,B_t_all,C_t_all,M_all,tau_all,Xi_all,tau_f,U_all,V_all,...
-    K_all,L_all,A,B,C);
+system_index = alg2(G_cl_all,M_all,tau_all,Xi_all,tau_f,U_all,V_all,...
+    K_all,L_all,A,B,C,h);
 
 %This is a random variable, we need to compute the estimation of its
 %expectation!
