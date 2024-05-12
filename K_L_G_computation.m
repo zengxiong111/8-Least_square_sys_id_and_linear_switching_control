@@ -25,8 +25,6 @@ A_t_all = zeros(2*n,2*n,N,N);
 B_t_all = zeros(2*n,p,N,N );
 C_t_all = zeros(m,2*n,N,N );
 
-Xi_all = zeros(N,N);
-
  
 for i = 1:N
     A_h =  A_all(:,:,i) ;
