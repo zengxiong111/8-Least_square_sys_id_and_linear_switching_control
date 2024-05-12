@@ -1,7 +1,33 @@
-function system_index = alg2(A_all,B_all,C_all,G_cl_all,tau_all,Xi_all,tau_f,U_all,V_all,K_all,L_all,A,B,C,h,sigma_w_2,sigma_v_2)
+function system_index = alg2(A_all,B_all,C_all,Q,R,sigma_u_2,sigma_w_2,sigma_v_2,h,delta_p)
 
-N = size(G_cl_all,3);
+N = size(A_all,3);
+n = size(A_all,1);
+
+%all possible closed-loop systems
+[K_all,L_all,G_cl_all,A_t_all,B_t_all,C_t_all] = K_L_G_computation(A_all,B_all,... 
+    C_all,Q,R,sigma_w_2,sigma_v_2,h); %delta_p is the probability
+
+%compute least distance and critical direction
+[gamma,U_all,V_all] = compute_gamma_critical_direction(G_cl_all);
+tau_f = zeros(N,1);
+for i =1:N
+    tau_f(i) = 4*(sigma_w_2+sigma_v_2)/(sigma_u_2*gamma(i))*log(N^2/delta_p);
+end
+ 
+M_all = zeros(N,1);
+tau_all = zeros(N,1);
+Xi_all = zeros(N,1);
+
+[epsilon_a,epsilon_c] = compute_epsilon(A_t_all,C_t_all);
+
+[M_all,tau_all,Xi_all] = inputs_alg2(A_t_all,B_t_all,C_t_all,epsilon_a,epsilon_c,...
+    sigma_w_2,sigma_u_2,sigma_v_2,delta_p);
+
 T_all = sum(tau_all);
+
+A = A_all(:,:,N);
+B = B_all(:,:,N);
+C = C_all(:,:,N);
 
 %noise trajectory
 W = mvnrnd(zeros(n,1),sigma_w_2*eye(n),T_all);

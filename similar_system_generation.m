@@ -34,7 +34,7 @@ A_all(:,:,N) = A;
 B_all(:,:,N) = B;
 C_all(:,:,N) = C;
 
-interval = 0.01;
+interval = 0.5;
 
 for i = 1:N-1
     A_all(:,:,i) = A + i* interval * ones(size(A));
