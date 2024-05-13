@@ -13,15 +13,14 @@ L_all = zeros(n,m,N);
 G_cl_all = zeros(m,h*p,N,N);
 
 for i = 1:N
-    A = squeeze(A_all(:,:,i));
-    B = squeeze(B_all(:,:,i));
-    C = squeeze(C_all(:,:,i));
-    [K_all(:,:,i),S1,e1] = dlqr(A, B, Q,R);
-    [K_temp,S2,e2] = dlqr(A',C',sigma_w_2 * eye(n),sigma_v_2 * eye(p)) ;
-    L_all(:,:,i) = K_temp';
+    A =  A_all(:,:,i) ;
+    B =  B_all(:,:,i) ;
+    C =  C_all(:,:,i) ;
+    [K_temp,S1,e1] = dlqr(A, B, Q,R);
+    K_all(:,:,i) = K_temp*inv(C);
 end
 
-A_t_all = zeros(2*n,2*n,N,N);
+A_t_all = zeros( n,2*n,N,N);
 B_t_all = zeros(2*n,p,N,N );
 C_t_all = zeros(m,2*n,N,N );
 
