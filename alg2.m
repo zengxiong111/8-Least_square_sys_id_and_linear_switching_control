@@ -4,7 +4,7 @@ N = size(A_all,3);
 n = size(A_all,1);
 
 %all possible closed-loop systems
-[K_all,L_all,G_cl_all,A_t_all,B_t_all,C_t_all] = K_L_G_computation(A_all,B_all,... 
+[K_all,G_cl_all,A_t_all,B_t_all,C_t_all] = K_L_G_computation(A_all,B_all,... 
     C_all,Q,R,sigma_w_2,sigma_v_2,h); %delta_p is the probability
 
 %compute least distance and critical direction
@@ -44,21 +44,20 @@ time_index = 1;
 x = zeros(n,T_all+1);
 x(:,time_index) = xnow;
 
+ynow = C*xnow + Z(:,time_index);
+
 for i =1:N
     Know = K_all(:,:,i); 
-    Lnow = L_all(:,:,i);
     y_energy = 0;
     for t=1:tau_all(i)
 
-        u = Know * x_hat_now;  
+        u = Know * ynow;  
         xnext = A*xnow+B*u + W(:,time_index);
         ynow = C*xnow + Z(:,time_index);
-        x_hat_next = A_all(:,:,i)*x_hat_now+...
-            B_all(:,:,i)*u+Lnow*(ynow - C_all(:,:,i)*x_hat_now);
 
         x(:,time_index+1) = xnext;
         xnow = xnext;
-        x_hat_now = x_hat_next;
+        
         time_index = time_index+1;
         y_energy = y_energy + norm(ynow); 
     end
@@ -73,14 +72,12 @@ for i =1:N
         Y_id_all = ynow;
         U_id_all = u;
         for t = 1:tau_f(i)
-            u = Know * x_hat_now + Ue(:,t);  
-            xnext = A*xnow+B*u + W(:,t);
+            u = Know * ynow + Ue(:,t);  
+            xnext = A*xnow + B*u + W(:,t);
             ynow = C*xnow + Z(:,t);
-            x_hat_next = A_all(:,:,i)*x_hat_now+...
-                B_all(:,:,i)*u+Lnow*(ynow - C_all(:,:,i)*x_hat_now);
+             
             x(:,time_index+1) = xnext;
             xnow = xnext;
-            x_hat_now = x_hat_next;
             Y_id_all = [Y_id_all ynow];
             U_id_all = [U_id_all Ue(:,t)];
         end

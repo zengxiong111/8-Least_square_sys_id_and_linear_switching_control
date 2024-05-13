@@ -7,7 +7,7 @@ for i = 1:5
     D = zeros(m,p);
     
     B = normrnd(0,1/n,[n,p]);
-    C = normrnd(0,10,[m,n]);
+    C = normrnd(0,1,[m,n]);
     A = rand(n);
     A = r * A/vrho(A);
 

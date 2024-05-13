@@ -1,4 +1,4 @@
-function [K_all,L_all,G_cl_all,A_t_all,B_t_all,C_t_all] = K_L_G_computation(A_all,B_all,C_all,Q,R,sigma_w_2,sigma_v_2,h)
+function [K_all,G_cl_all,A_t_all,B_t_all,C_t_all] = K_L_G_computation(A_all,B_all,C_all,Q,R,sigma_w_2,sigma_v_2,h)
 
 %delta is the probability.
 
@@ -8,7 +8,6 @@ p = size(B_all,2);
 m = size(C_all,1);
 
 K_all = zeros(p,n,N);
-L_all = zeros(n,m,N);
 
 G_cl_all = zeros(m,h*p,N,N);
 
@@ -20,9 +19,9 @@ for i = 1:N
     K_all(:,:,i) = K_temp*inv(C);
 end
 
-A_t_all = zeros( n,2*n,N,N);
-B_t_all = zeros(2*n,p,N,N );
-C_t_all = zeros(m,2*n,N,N );
+A_t_all = zeros( n, n,N,N);
+B_t_all = zeros( n,p,N,N );
+C_t_all = zeros(m, n,N,N );
 
  
 for i = 1:N
@@ -30,15 +29,13 @@ for i = 1:N
     B_h =  B_all(:,:,i) ;
     C_h =  C_all(:,:,i) ;
     K_h =  K_all(:,:,i) ;
-    L_h =  L_all(:,:,i) ;
     for j=1:N
         A =  A_all(:,:,j) ;
         B =  B_all(:,:,j) ;
         C =  C_all(:,:,j) ;
-        A_t_all(:,:,i,j) = [A-B*K_h   B*K_h; ...
-            (A_h-A)+(B_h-B)*K_h+L_h*(C-C_h)   A_h-L_h*C_h+(B_h-B)*K_h];
-        B_t_all(:,:,i,j) = [B;zeros(size(B))];
-        C_t_all(:,:,i,j) = [C zeros(size(C))];
+        A_t_all(:,:,i,j) = A-B*K_h*C;
+        B_t_all(:,:,i,j) = B ;
+        C_t_all(:,:,i,j) =  C ;
 
         G_cl_all(:,1:p,i,j) = zeros(m,p);
         for k = 1:h-1

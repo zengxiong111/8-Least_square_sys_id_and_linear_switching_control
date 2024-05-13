@@ -2,7 +2,7 @@ r = 1.1; %r is the spetral radius of A
 n = 2; %n is the system state dimension
 m = n; %m is the output dimension
 p = 1; %p is the control input dimension
-N = 3; % the number of system candidates
+N = 2; % the number of system candidates
 h = 4; % The length of the time horizon of Markov parameter matrix 
 delta_p=0.1; %The probability of failure
 
@@ -19,9 +19,9 @@ delta_p=0.1; %The probability of failure
 Q = eye(n);
 R = eye(p);
 
-sigma_u_2 = 1;
-sigma_w_2 = 0.02;
-sigma_v_2 = 0.02;
+sigma_u_2 = 10;
+sigma_w_2 = 0.1;
+sigma_v_2 = 0.1;
 
 %similar systems generation
 [A_all,B_all,C_all] = similar_system_generation(r,m,n,p,N);
