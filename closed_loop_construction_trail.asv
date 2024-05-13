@@ -13,12 +13,10 @@ for i = 1:5
     Ob = obsv(A,C);
     Co = ctrb(A,B);
     % check if the genrated system is controllable and observable
-%     if(rank(Ob) == n & rank(Co) == n & rank(C) == n)
-if(rank(Ob) == n & rank(Co) == n )
+    if(rank(Ob) == n & rank(Co) == n & rank(C) == n)
         break;
     end
-%     if(rank(Ob) < n | rank(Co) < n | rank(C) < n)
-  if(rank(Ob) < n | rank(Co) < n )
+    if(rank(Ob) < n | rank(Co) < n | rank(C) < n)
         continue;
     end
 end
@@ -30,10 +28,11 @@ sigma_u = 1;
 sigma_w = 0.02;
 sigma_z = 0.02;
 
-[K,S1,e1] = dlqr(A,B,Q,R);
-Ko = K*inv(C);
+[Ks,S1,e1] = dlqr(A,B,Q,R);
+Ko = Ks*inv(C);
 vrho(A-B*Ko*C)
-Ob_h = obsv(A-B*Ko*C,C);
+Ob_h = obsv(A_h,C_h);
+Co_h = ctrb(A_h,B_h);
 rank(Ob_h)
 svd_Ob_h = svd(Ob_h)
 svd(obsv(A,C))
@@ -66,8 +65,7 @@ C = zeros(m,n);
 D = zeros(m,p);
 
 B = normrnd(0,1/n,[n,p]);
-%C = normrnd(0,1/m,[m,n]);
-C = normrnd(0,10,[m,n]);
+C = normrnd(0,1/m,[m,n]);
 A = rand(n);
 A = r * A/vrho(A);
 

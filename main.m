@@ -1,8 +1,8 @@
 r = 1.1; %r is the spetral radius of A
-m = 1; %m is the output dimension
+m = 2; %m is the output dimension
 n = 2; %n is the system state dimension
 p = 1; %p is the control input dimension
-N = 2; % the number of system candidates
+N = 3; % the number of system candidates
 h = 4; % The length of the time horizon of Markov parameter matrix 
 delta_p=0.1; %The probability of failure
 
