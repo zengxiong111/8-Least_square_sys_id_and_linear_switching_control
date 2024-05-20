@@ -21,7 +21,6 @@ C = C_all(:,:,N);
 G_cl_all = zeros(m,h*p,N);
  
 for i = 1:N
-    
     G_cl_all(:,1:p,i) = zeros(m,p);
     for k = 1:h-1
         G_cl_all(:,k*p + 1: (k+1)*p,i) = C_all(:,:,i) * A_all(:,:,i)^(k-1)* B_all(:,:,i);
@@ -59,7 +58,29 @@ for j=2:N
     end
 end
 
-system_index = i;
+Ali_system_index = i;
+
+%Find the minimum operator norm!
+%And change the proof!
+
+G_G_hat_norm = zeros(N,1);
+Operator_system_index = 1;
+min_temp = norm(G_cl_all - G_hat);
+
+for i =2:N
+    if(norm(G_cl_all(:,:,i) - G_hat) < min_temp)
+        min_temp = norm(G_cl_all(:,:,i) - G_hat);
+        Operator_system_index = i;
+    end
+end
+
+
+% Estimation error
+fprintf('    The index of the ture system:  %6.3E \n', N);
+fprintf('    The index from the  method of Ali:  %6.3E \n', Ali_system_index);
+fprintf('    The index from the minimum operator norm:  %6.3E \n', Operator_system_index);
+
+
 
 
  

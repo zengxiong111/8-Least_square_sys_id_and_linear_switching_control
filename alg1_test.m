@@ -35,18 +35,16 @@ N=size(G_i_all,3);
 
 G_hat = G_least_square(U_id_all,Y_id_all,h);
 
-U_all = zeros(m,N,N,N);
-V_all = zeros(h*p,N,N,N);
+U_all = zeros(m,N,N);
+V_all = zeros(h*p,N,N);
 
 %critical direction is actually the first lest-singular vector and
 %right-singular vector
 for i = 1 : N
     for j = 1 : N 
-        for k = 1 : N
-            [U,S,V] = svd(G_cl_all(:,:,j,i)-G_cl_all(:,:,k,i));
-            U_all(:,j,k,i) = U(:,1);
-            V_all(:,j,k,i) = V(:,1);
-        end
+        [U,S,V] = svd(G_cl_all(:,:,j,i)-G_cl_all(:,:,k,i));
+        U_all(:,j,k,i) = U(:,1);
+        V_all(:,j,k,i) = V(:,1);
     end
 end
  
@@ -62,6 +60,17 @@ Ali_system_index = i;
 
 %Find the minimum operator norm!
 %And change the proof!
+
+G_G_hat_norm = zeros(N,1);
+Operator_system_index = 1;
+min_temp = norm(G_cl_all - G_hat);
+
+for i =2:N
+    if(norm(G_cl_all(:,:,i) - G_hat) < min_temp)
+        min_temp = norm(G_cl_all(:,:,i) - G_hat);
+        Operator_system_index = i;
+    end
+end
 
 
 % Estimation error
