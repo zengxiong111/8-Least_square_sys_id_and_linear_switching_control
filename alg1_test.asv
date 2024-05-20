@@ -7,6 +7,8 @@ N = 3; % the number of system candidates
 h = 4; % The length of the time horizon of Markov parameter matrix 
 delta_p=0.1; %The probability of failure
 
+Length_traj = 100;
+
 sigma_u_2 = 1;
 sigma_w_2 = 0.01;
 sigma_v_2 = 0.01;
@@ -17,43 +19,40 @@ sigma_v_2 = 0.01;
 A = A_all(:,:,N);
 B = B_all(:,:,N);
 C = C_all(:,:,N);
+D = zeros(m,p);
 
-G_cl_all = zeros(m,h*p,N);
+G_all = zeros(m,h*p,N);
  
 for i = 1:N
-    G_cl_all(:,1:p,i) = zeros(m,p);
+    G_all(:,1:p,i) = zeros(m,p);
     for k = 1:h-1
-        G_cl_all(:,k*p + 1: (k+1)*p,i) = C_all(:,:,i) * A_all(:,:,i)^(k-1)* B_all(:,:,i);
+        G_all(:,k*p + 1: (k+1)*p,i) = C_all(:,:,i) * A_all(:,:,i)^(k-1)* B_all(:,:,i);
     end
      
 end
 
-[U_single,Y_single] = single_trajectory_generation(N,T,A,B,C,D,sigma_u_2,sigma_w_2,sigma_v_2);
+[U_single,Y_single] = single_trajectory_generation(Length_traj,h,A,B,C,D,sigma_u_2,sigma_w_2,sigma_v_2);
 G_ls = G_least_square(U_single,Y_single,h);
-
-N=size(G_i_all,3);
 
 G_hat = G_least_square(U_id_all,Y_id_all,h);
 
-U_all = zeros(m,N,N,N);
-V_all = zeros(h*p,N,N,N);
+U_all = zeros(m,N,N);
+V_all = zeros(h*p,N,N);
 
 %critical direction is actually the first lest-singular vector and
 %right-singular vector
 for i = 1 : N
     for j = 1 : N 
-        for k = 1 : N
-            [U,S,V] = svd(G_cl_all(:,:,j,i)-G_cl_all(:,:,k,i));
-            U_all(:,j,k,i) = U(:,1);
-            V_all(:,j,k,i) = V(:,1);
-        end
+        [U,S,V] = svd(G_all(:,:,i) - G_all(:,:,j));
+        U_all(:,i,j) = U(:,1);
+        V_all(:,j,k,i) = V(:,1);
     end
 end
  
 i=1;
 for j=2:N
-    if(abs(U_i_all(:,i,j)'*(G_i_all(:,:,i) - G_hat)*V_i_all(:,i,j)) <=...
-            abs(U_i_all(:,i,j)'*(G_i_all(:,:,j) - G_hat)*V_i_all(:,i,j)))
+    if(abs(U_i_all(:,i,j)'*(G_all(:,:,i) - G_hat)*V_i_all(:,i,j)) <=...
+            abs(U_i_all(:,i,j)'*(G_all(:,:,j) - G_hat)*V_i_all(:,i,j)))
         i=j;
     end
 end
