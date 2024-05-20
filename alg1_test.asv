@@ -1,0 +1,67 @@
+clear
+r = 1.01; %r is the spetral radius of A
+n = 2; %n is the system state dimension
+m = n; %m is the output dimension
+p = 1; %p is the control input dimension
+N = 3; % the number of system candidates
+h = 4; % The length of the time horizon of Markov parameter matrix 
+delta_p=0.1; %The probability of failure
+
+% A_all = zeros(n,n,N);
+% B_all = zeros(n,p,N );
+% C_all = zeros(m,n,N );
+% G_cl_all = zeros(m,h*p,N,N);
+
+Q = eye(n);
+R = eye(p);
+
+sigma_u_2 = 1;
+sigma_w_2 = 0.01;
+sigma_v_2 = 0.01;
+
+%similar systems generation
+[A_all,B_all,C_all] = similar_system_generation(r,m,n,p,N);
+
+
+
+A = A_all(:,:,N);
+B = B_all(:,:,N);
+C = C_all(:,:,N);
+
+G_cl_all = zeros(m,h*p,N,N);
+
+for i = 1:N
+    A =  A_all(:,:,i) ;
+    B =  B_all(:,:,i) ;
+    C =  C_all(:,:,i) ;
+    [K_temp,S1,e1] = dlqr(A, B, Q,R);
+    K_all(:,:,i) = K_temp*inv(C);
+end
+
+A_t_all = zeros( n, n,N,N);
+B_t_all = zeros( n,p,N,N );
+C_t_all = zeros(m, n,N,N );
+
+ 
+for i = 1:N
+    A_h =  A_all(:,:,i) ;
+    B_h =  B_all(:,:,i) ;
+    C_h =  C_all(:,:,i) ;
+    K_h =  K_all(:,:,i) ;
+    for j=1:N
+        A =  A_all(:,:,j) ;
+        B =  B_all(:,:,j) ;
+        C =  C_all(:,:,j) ;
+        A_t_all(:,:,i,j) = A-B*K_h*C;
+        B_t_all(:,:,i,j) = B ;
+        C_t_all(:,:,i,j) =  C ;
+
+        G_cl_all(:,1:p,i,j) = zeros(m,p);
+        for k = 1:h-1
+            G_cl_all(:,k*p + 1: (k+1)*p,i,j) = C_t_all(:,:,i,j) * A_t_all(:,:,i,j)^(k-1)* B_t_all(:,:,i,j);
+        end
+    end
+end
+
+
+ 

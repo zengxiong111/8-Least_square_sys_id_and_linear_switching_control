@@ -21,6 +21,6 @@ for i = 1:N
     U(i,:) = u_bar';
 end
 
-    G_ls = (pinv(U)*Y)';
+G_ls = (pinv(U)*Y)';
 
 end

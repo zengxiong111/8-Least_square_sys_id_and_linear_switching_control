@@ -1,8 +1,9 @@
-r = 1.1; %r is the spetral radius of A
+clear
+r = 1.01; %r is the spetral radius of A
 n = 2; %n is the system state dimension
 m = n; %m is the output dimension
 p = 1; %p is the control input dimension
-N = 2; % the number of system candidates
+N = 3; % the number of system candidates
 h = 4; % The length of the time horizon of Markov parameter matrix 
 delta_p=0.1; %The probability of failure
 
@@ -19,9 +20,9 @@ delta_p=0.1; %The probability of failure
 Q = eye(n);
 R = eye(p);
 
-sigma_u_2 = 10;
-sigma_w_2 = 0.1;
-sigma_v_2 = 0.1;
+sigma_u_2 = 1;
+sigma_w_2 = 0.01;
+sigma_v_2 = 0.01;
 
 %similar systems generation
 [A_all,B_all,C_all] = similar_system_generation(r,m,n,p,N);
@@ -46,9 +47,13 @@ sigma_v_2 = 0.1;
 % [M_all,tau_all,Xi_all] = inputs_alg2(A_t_all,B_t_all,C_t_all,epsilon_a,epsilon_c,...
 %     sigma_w_2,sigma_u_2,sigma_v_2,delta_p);
 
+A = A_all(:,:,N);
+B = B_all(:,:,N);
+C = C_all(:,:,N);
 
+[system_index, K_o] = alg2(A_all,B_all,C_all,Q,R,sigma_u_2,sigma_w_2,sigma_v_2,h,delta_p);
+vrho(A-B*K_o*C)
 
-system_index = alg2(A_all,B_all,C_all,Q,R,sigma_u_2,sigma_w_2,sigma_v_2,h,delta_p);
 
 %This is a random variable, we need to compute the estimation of its
 %expectation!

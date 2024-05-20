@@ -5,8 +5,7 @@ for i = 1:5
     B = zeros(n,p);
     C = zeros(m,n);
     D = zeros(m,p);
-    
-    B = normrnd(0,1/n,[n,p]);
+    B = normrnd(0,1,[n,p]);
     C = normrnd(0,1,[m,n]);
     A = rand(n);
     A = r * A/vrho(A);
@@ -34,7 +33,7 @@ A_all(:,:,N) = A;
 B_all(:,:,N) = B;
 C_all(:,:,N) = C;
 
-interval = 0.5;
+interval = 0.1;
 
 for i = 1:N-1
     A_all(:,:,i) = A + i* interval * ones(size(A));
