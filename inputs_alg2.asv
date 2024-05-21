@@ -51,21 +51,21 @@ c_e = max([1,1/log(1+epsilon_a)]);
 c_r = m_p * (22*epsilon_c^(-2)+1)*sigma_m^2*c_e;
 c_p = 2*max([1,m_p/(epsilon_c^2)]);
 
-
+M_all = zeros(N,1);
 
 M_all(1) = 5 * m_p * log(1/delta_p);
 
 %tau_all(1) = n + log(1/delta_p);
-tau_all(1) = max([1600/9*log(1/delta_p),...
+tau_all(1) = int16(max([1600/9*log(1/delta_p),...
    1/log(1+epsilon_a)*log(6400*epsilon_c/(9*sigma_w_2*delta_p)*(M_all(1) + ...
-   c_r *log(2/delta_p)*n^2 * m_a^(4*n) + c_s * log(1/delta_p) ))]);
+   c_r *log(2/delta_p)*n^2 * m_a^(4*n) + c_s * log(1/delta_p) ))]));
 for j= 2:N
-    tau_all(j) = (j-1)*(2/log(m_a)*n + log(c_p)) + tau_all(1);
+    tau_all(j) = int16((j-1)*(2/log(m_a)*n + log(c_p))) + tau_all(1);
 end
 
 for j=2:N
-    M_all(j) = m_p/(epsilon_c^2)*m_a^(2*n)*(M_all(j-1)+tau_all(j-1)*c_s)...
-        + c_r * log(2/delta_p)* n^2 * m_a^(4*n);
+    M_all(j,1) = m_p/(epsilon_c^2)*m_a^(2*n)*(M_all(j-1)+tau_all(j-1)*c_s)...
+        + c_r * log(2/delta_p)* n^2 * m_a^(4*n)
 end
 
 Xi_all = zeros(N,1);

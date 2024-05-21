@@ -51,7 +51,7 @@ c_e = max([1,1/log(1+epsilon_a)]);
 c_r = m_p * (22*epsilon_c^(-2)+1)*sigma_m^2*c_e;
 c_p = 2*max([1,m_p/(epsilon_c^2)]);
 
-
+M_all = zeros(N,1);
 
 M_all(1) = 5 * m_p * log(1/delta_p);
 
@@ -64,8 +64,7 @@ for j= 2:N
 end
 
 for j=2:N
-    M_all(j) = m_p/(epsilon_c^2)*m_a^(2*n)*(M_all(j-1)+tau_all(j-1)*c_s)...
-        + c_r * log(2/delta_p)* n^2 * m_a^(4*n);
+    M_all(j) = m_p/(epsilon_c^2)*m_a^(2*n)*(M_all(j-1)+double(tau_all(j-1))*c_s) + c_r * log(2/delta_p)* n^2 * m_a^(4*n);
 end
 
 Xi_all = zeros(N,1);

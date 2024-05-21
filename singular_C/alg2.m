@@ -11,7 +11,10 @@ n = size(A_all,1);
 [gamma,U_all,V_all] = compute_gamma_critical_direction(G_cl_all);
 tau_f = zeros(N,1);
 for i =1:N
-    tau_f(i) = 4*(sigma_w_2+sigma_v_2)/(sigma_u_2*gamma(i))*log(N^2/delta_p);
+    %tau_f(i) = int16(4*(sigma_w_2+sigma_v_2)/(sigma_u_2*gamma(i))*log(N^2/delta_p));
+    %tau_f(i) = int16(4*(sigma_w_2+sigma_v_2)/(sigma_u_2*gamma(i)^2)*log(N^2/delta_p));
+    tau_f(i) = int16(max([800/9 * log(3*N^2/delta_p), 4*800*(sigma_w_2+sigma_v_2)/(9*gamma(i)^2*sigma_u_2),...
+        4*3200*(sigma_w_2+sigma_v_2)/(9 * sigma_u_2 * gamma(i)^2)* log(16000*N^4/(delta_p^2)) ] ));
 end
  
 M_all = zeros(N,1);

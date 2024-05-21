@@ -43,7 +43,9 @@ for j = 1 : N-1
     end
 end
 
-[U_single,Y_single] = single_trajectory_generation(Length_traj,h,A,B,C,D,sigma_u_2,sigma_w_2,sigma_v_2);
+X_1 = ones(n,1);
+
+[U_single,Y_single] = single_trajectory_generation(Length_traj+h,A,B,C,D,sigma_u_2,sigma_w_2,sigma_v_2,X_1);
 
 G_hat = G_least_square(U_single,Y_single,h);
 
