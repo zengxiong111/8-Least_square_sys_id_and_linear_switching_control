@@ -64,7 +64,7 @@ end
  
 i=1;
 for j=2:N
-    if(abs(U_all(:,i,j)'*(G_all(:,:,i) - G_hat)*V_all(:,i,j)) <=...
+    if(abs(U_all(:,i,j)'*(G_all(:,:,i) - G_hat)*V_all(:,i,j)) >=...
             abs(U_all(:,i,j)'*(G_all(:,:,j) - G_hat)*V_all(:,i,j)))
         i=j;
     end
